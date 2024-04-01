@@ -1,12 +1,11 @@
 <?php
-// Plugin Name: 青柠社-主题环境检测器
-// Plugin URI: https://tqlen.com
-// Description: 启用插件后，点击开始检测来检测当前的服务器环境是否适配主题
+// Plugin Name: Len 主题环境检测器[Len Topic Environment Detector]
+// Plugin URI: https://www.tqlen.com/len-detector
+// Description: 启用插件后|点击开始检测来检测当前的服务器环境是否适配主题[After enabling the plugin, click Start Detection to check whether the current server environment is suitable for the theme]
 // Author: Len
 // Version: 12.2.7
 // PHP Required: 7.4
-// Author URI: https://tqlen.com
-
+// Author URI: https://www.tqlen.com
 
 // 如果直接访问该文件，则退出
 if (!defined('ABSPATH')) {
@@ -66,8 +65,10 @@ add_filter('plugin_action_links', 'Plugin_Links', 10, 2);
  */
 function Detector_Page_Ajax()
 {
-    // 获取请求中的随机字符串
+    // 验证 nonce
+    check_ajax_referer('Detector_Page_Ajax_nonce', '_wpnonce');
 
+    // 获取请求中的随机字符串
     $Request_Random_String = isset($_GET['random_string']) ? $_GET['random_string'] : '';
     // 获取当前存储的随机字符串
     $Generate_Key = get_option('Generate_Key');
@@ -177,7 +178,6 @@ function Detector_Page_Ajax()
 
             <script>
                 // 定义函数
-                // 定义函数
                 function showContent() {
                     // 获取选择框中选中的值
                     var selectedValue = document.getElementById("selectBox").value;
@@ -215,7 +215,7 @@ function Detector_Page_Ajax()
         </html>
 <?php
     } else {
-        // 如果随机字符串不匹配，输出错误消息
+        // 如果随机字符串不匹配或权限不足，输出错误消息
         echo '无法访问此网页';
     }
 
